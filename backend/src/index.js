@@ -1,6 +1,7 @@
 const express = require('express');
 
 const app = express();
+app.use(express.json());
 
 /**
  * Métodos HTTP
@@ -10,7 +11,19 @@ const app = express();
  * DELETE:      Remover uma informação
  */
 
+/**
+ * Tipos de parametros
+ * Query params:   Principalmente para filtros e paginação
+ * Route Params:   identificar recursos (atualizar deletar etc)
+ * Request body:   conteúdo na hora de criar conteudo
+ */
+
 app.get('/projects', (request, response) => {
+    const { title, base } = request.query;
+
+    console.log(title);
+    console.log(base);
+
     return response.json([
         'Projeto 1',
         'Projeto 2'
@@ -18,6 +31,8 @@ app.get('/projects', (request, response) => {
 })
 
 app.post('/projects', (request, response) => {
+    const body = request.body;
+    console.log(body);
     return response.json([
         'Projeto 1',
         'Projeto 2',
@@ -26,6 +41,10 @@ app.post('/projects', (request, response) => {
 })
 
 app.put('/projects/:id', (request, response) => {
+    //const {id} = request.params;
+    const params = request.params;
+    console.log(params);
+
     return response.json([
         'Projeto 1',
         'Projeto 2',
@@ -34,6 +53,9 @@ app.put('/projects/:id', (request, response) => {
 })
 
 app.delete('/projects/:id', (request, response) => {
+    //const {id} = request.params;
+    const params = request.params;
+    console.log(params);
     return response.json([
         'Projeto 1',
         'Projeto 3'
