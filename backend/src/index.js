@@ -21,14 +21,13 @@ app.use(express.json());
 const projects = [];
 
 app.get('/projects', (request, response) => {
-    /**
-     * const { title, base } = request.query;
+    const { title } = request.query;
 
-    console.log(title);
-    console.log(base);
-     */
+    const results = title ?
+        projects.filter(project => project.title.includes(title)) :
+        projects;
 
-    return response.json(projects);
+    return response.json(results);
 })
 
 app.post('/projects', (request, response) => {
@@ -43,6 +42,7 @@ app.post('/projects', (request, response) => {
 
 app.put('/projects/:id', (request, response) => {
     const { id } = request.params;
+    const { title, owner } = request.body;
 
     const projectPos = projects.findIndex(project => project.id == id);
 
@@ -50,21 +50,29 @@ app.put('/projects/:id', (request, response) => {
         return response.status(400).json({ error: 'Project not found!' });
     }
 
-    return response.json([
-        'Projeto 1',
-        'Projeto 2',
-        'Projeto 3'
-    ]);
+    const project = {
+        id,
+        title,
+        owner
+    }
+
+    projects[projectPos] = project;
+
+    return response.json(project);
 })
 
 app.delete('/projects/:id', (request, response) => {
-    //const {id} = request.params;
-    const params = request.params;
-    console.log(params);
-    return response.json([
-        'Projeto 1',
-        'Projeto 3'
-    ]);
+    const { id } = request.params;
+
+    const projectPos = projects.findIndex(project => project.id == id);
+
+    if (projectPos < 0) {
+        return response.status(400).json({ error: 'Project not found!' });
+    }
+
+    projects.splice(projectPos, 1);
+
+    return response.status(204).send();
 })
 
 app.listen(3333, () => {
