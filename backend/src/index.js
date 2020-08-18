@@ -18,7 +18,24 @@ app.use(express.json());
  * Request body:   conteúdo na hora de criar conteudo
  */
 
+/**
+ * Middleware: 
+ * interceptador de requisições, interromper totalmente ou alterar dados da requisição
+ */
+
 const projects = [];
+
+function logRequests(request, response, next) {
+    const { method, url } = request;
+
+    const logLabel = `[${method.toUpperCase()}] ${url}`;
+
+    console.log(logLabel);
+
+    return next();
+}
+
+app.use(logRequests);
 
 app.get('/projects', (request, response) => {
     const { title } = request.query;
