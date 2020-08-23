@@ -1,7 +1,19 @@
 import React from 'react';
-
+import Header from './components/Header';
 function App() {
-    return <h1>Hello World</h1>;
+
+    const projects = ['Desenvolvimento de app', 'Front-end web'];
+
+    return (
+        <>
+            <Header title="Projects">
+
+            </Header>
+            <ul>
+                {projects.map(project => <li key={project}>{project}</li>)}
+            </ul>
+        </>
+        );
 }
 
 export default App;
